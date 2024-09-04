@@ -15,7 +15,6 @@ public class Perceptron {
 
 //---------------------------        //gerar valores aleatorios para a matriz de pesos : com valores ntre -0.3 - 0.3
 
-
     }
 
     //entrada da amostra xi (x_in), saida desejada yi
