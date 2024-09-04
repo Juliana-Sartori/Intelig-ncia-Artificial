@@ -13,28 +13,35 @@ public class Main {
 
     public static void main(String[] args) {
         //inicialização do Perceptron
-        Perceptron rna = new Perceptron(2,1);
+        Perceptron rna = new Perceptron(3,2);
 
+        System.out.println("----------------------------------------");
+        System.out.println(" Época    | Erro aproximado da época        " );
+        System.out.println("----------------------------------------");
         //de epocas (1000 epocas)
         for (int e = 0; e < 1000; e++){
             double erro_epoca_aprox = 0;
 
             //pegas as amostras
-            for (int a=0; a< portaE.length; a++){
-                double [][] amostra = portaE[a];
-                double [] x_in = amostra[0];
-                double [] y = amostra[1];
+            for (int a=0; a < portaE.length; a++) {
+                double[][] amostra = portaE[a];
+                double[] x_in = amostra[0];
+                double[] y = amostra[1];
 
-                double [] o = rna.treinar(x_in, y);
+                double[] o = rna.treinar(x_in, y);
 
                 double erro_amostra_aprox = 0;
-                //fazer um for para somar os erros de cada saida  obtida em relacao a saida desejada
 
-                 erro_epoca_aprox += erro_amostra_aprox;
+                for (int j = 0; j < o.length; j++) {
+                    erro_amostra_aprox += Math.abs((y[j] - o[j]));
+                }
 
+                erro_epoca_aprox += erro_amostra_aprox;
             }
 
-            System.out.println("Erro da epoca: " +e+ " E_aprox: "+erro_epoca_aprox);
+            System.out.println("  "+e+"       |"+"    "  +erro_epoca_aprox+"             ");
+
         }
+        System.out.println("----------------------------------------");
     }
 }

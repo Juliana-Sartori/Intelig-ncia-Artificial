@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Perceptron {
 
     //qtd de neuronios de entrada e saida
@@ -14,12 +16,18 @@ public class Perceptron {
         this.pesos = new double[qtd_in+1][qtd_out];
 
 //---------------------------        //gerar valores aleatorios para a matriz de pesos : com valores ntre -0.3 - 0.3
+        Random rand = new Random();
+        for (int i = 0; i < pesos.length; i++) {
+            for (int j = 0; j < pesos[i].length; j++) {
+                pesos[i][j] = -0.3 + (0.3 - (-0.3)) * rand.nextDouble();
+            }
+        }
 
     }
 
     //entrada da amostra xi (x_in), saida desejada yi
     public double[] treinar (double [] x_in, double [] y){
-        double [] xi = new double[x_in.length];
+        double [] xi = new double[x_in.length + 1];
         //beas
         xi[0] = 1;
 
