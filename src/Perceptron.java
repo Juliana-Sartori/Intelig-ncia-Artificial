@@ -34,13 +34,14 @@ public class Perceptron {
         for (int i = 0; i < x_in.length; i++){
             xi[i+1] = x_in[i];
         }
-//---------------------------          //em duvida se esse u ta certo
+
         double [] u = new double[y.length];
         double [] o = new double[y.length];
 //---------------------------  u.length ??
         //esse for fiz o 1° neuronio
-        for (int j = 0; j< u.length; j++){
+        for (int j = 0; j< y.length; j++){
             //esse for percorre as linhas
+            u[j]=0;
             for (int i = 0; i < xi.length; i++){
                 u[j] = u[j] + ( xi[i] * this.pesos[i][j]);
             }
@@ -53,7 +54,7 @@ public class Perceptron {
         double n = 0.3;
 
         for(int j = 0; j< y.length; j++){
-            for(int i = 0; i< x_in.length; i++){
+            for(int i = 0; i< xi.length; i++){
                 dW[i][j] = n * (y[j] - o[j]) * xi[i];
 
             }
@@ -61,7 +62,7 @@ public class Perceptron {
 
         //atualizacao dos pesos
         for(int j = 0; j< y.length; j++){
-            for(int i = 0; i< x_in.length; i++){
+            for(int i = 0; i< xi.length; i++){
                 this.pesos [i][j] = this.pesos[i][j] + dW[i][j];
 
             }

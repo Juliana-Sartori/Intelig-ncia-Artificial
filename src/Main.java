@@ -13,13 +13,13 @@ public class Main {
 
     public static void main(String[] args) {
         //inicialização do Perceptron
-        Perceptron rna = new Perceptron(3,2);
+        Perceptron rna = new Perceptron(2,1);
 
         System.out.println("----------------------------------------");
         System.out.println(" Época    | Erro aproximado da época        " );
         System.out.println("----------------------------------------");
         //de epocas (1000 epocas)
-        for (int e = 0; e < 1000; e++){
+        for (int e = 0; e < 5000; e++){
             double erro_epoca_aprox = 0;
 
             //pegas as amostras
