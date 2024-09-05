@@ -1,9 +1,9 @@
+import java.util.Scanner;
+
 public class Main {
 
-    //base de dados da porta E
-    //a primeira dimencao eh as amostras, sendo ao todo 4
-    //a segunda dimencao sao as entradas e a saida {x,x} entrada {y} saida
-    //a terceira dimencao sao os valores dentro dos vetores x e y{}
+   static Scanner scn = new Scanner(System.in);
+
     static double [][][] portaE = new double[][][]{
             {{0,0}, {0}},
             {{0,1}, {0}},
@@ -11,20 +11,82 @@ public class Main {
             {{1,1}, {1}}
     };
 
+     static double [][][] portaOU = new double[][][]{
+            {{0,0}, {0}},
+            {{0,1}, {1}},
+            {{1,0}, {1}},
+            {{1,1}, {1}}
+    };
+
+    static double [][][] portaXOR = new double[][][]{
+            {{0,0}, {0}},
+            {{0,1}, {1}},
+            {{1,0}, {1}},
+            {{1,1}, {0}}
+    };
+
+    static double [][][] portaROBO = new double[][][]{
+            {{0,0,0}, {1,0}},
+            {{0,0,1}, {0,1}},
+            {{0,1,0}, {0,1}},
+            {{0,1,1}, {0,1}},
+            {{1,0,0}, {1,0}},
+            {{1,0,1}, {1,0}},
+            {{1,1,0}, {1,0}},
+            {{1,1,1}, {0,0}}
+    };
+
+   public static double [][][] readUser (){
+       int read = scn.nextInt();
+
+       switch (read) {
+           case 1:
+               return portaE;
+
+           case 2:
+               return portaOU;
+
+           case 3:
+               return portaXOR;
+
+           case 4:
+               return portaROBO;
+
+           default:
+               System.out.println("Opção inválida");
+               return new double[][][]{};
+       }
+   }
+
     public static void main(String[] args) {
-        //inicialização do Perceptron
-        Perceptron rna = new Perceptron(2,1);
+
+        System.out.println("--------------------------------");
+        System.out.println("| Escolha a base de dados:     |\n|                              |     ");
+        System.out.println("| Digite [1] para a Porta E    |");
+        System.out.println("| Digite [2] para a Porta OU   |");
+        System.out.println("| Digite [3] para a Porta XOR  |");
+        System.out.println("| Digite [4] para a Porta ROBÔ |");
+        System.out.println("--------------------------------");
+
+        double [][][] qualBase = readUser();
+
+        Perceptron rna;
+
+        if(qualBase == portaROBO) {
+                rna = new Perceptron(3,2); ;
+        } else{
+             rna = new Perceptron(2,1);
+        }
 
         System.out.println("----------------------------------------");
         System.out.println(" Época    | Erro aproximado da época        " );
         System.out.println("----------------------------------------");
-        //de epocas (1000 epocas)
-        for (int e = 0; e < 5000; e++){
+
+        for (int e = 0; e < 1000; e++){
             double erro_epoca_aprox = 0;
 
-            //pegas as amostras
-            for (int a=0; a < portaE.length; a++) {
-                double[][] amostra = portaE[a];
+            for (int a=0; a < qualBase.length; a++) {
+                double[][] amostra = qualBase[a];
                 double[] x_in = amostra[0];
                 double[] y = amostra[1];
 
