@@ -1,7 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -40,37 +36,8 @@ public class Main {
             {{1,1,1}, {0,0}}
     };
 
-    static double [][][] balance = new double[][][]{
 
-//            {
-//                    //            B,1,1,1,1
-////            R,1,1,1,2
-////            R,1,1,1,3
-////            L,1,2,1,1
-////            B,1,2,1,2
-////            vai ser assim:
-////            R:100
-////            L:010
-////            B: 001
-//            }
-
-            {{1,1,1,1}, {0,0,1}},
-            {{1,1,1,2}, {1,0,0}},
-            {{1,1,1,3}, {1,0,0}},
-            {{1,2,1,1}, {0,1,0}},
-            {{1,2,1,2}, {0,0,1}},
-    };
-
-//    public static void loadBalanceData() throws FileNotFoundException {
-//        File file = new File("/Users/Juliana/Desktop/facul-8/IC/dataBalance.txt");
-//        Scanner sc = new Scanner(file);
-//
-//
-//       while (sc.hasNextLine()){
-//           System.out.println(sc.nextLine());
-//       }
-//    }
-//}
+    static double[][][] balance = ReadData.todaBaseManual();
 
 
    public static double [][][] readUser (){
@@ -90,7 +57,17 @@ public class Main {
                return portaROBO;
 
            case 5:
+               try {
+                   balance = ReadData.convertToTridimensionalArray("/Users/Juliana/Desktop/facul-8/IC/dataBalance.txt");
+                   return balance;
+               } catch (Exception e) {
+                   System.out.println("Erro ao carregar a base de dados: " + e.getMessage());
+                   return new double[][][]{};
+               }
+
+           case 6:
                return balance;
+
 
            default:
                System.out.println("Opção inválida");
@@ -99,13 +76,6 @@ public class Main {
    }
 
     public static void main(String[] args) {
-
-//        try {
-//            loadBalanceData();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Arquivo não encontrado: " + e.getMessage());
-//            return;
-//        }
 
         System.out.println("--------------------------------");
         System.out.println("| Escolha a base de dados:     |\n|                              |     ");
@@ -117,14 +87,9 @@ public class Main {
         System.out.println("--------------------------------");
 
         double [][][] qualBase = readUser();
+//        ReadData.printMatriz(qualBase);
 
         Perceptron rna;
-
-//        if(qualBase == portaROBO) {
-//                rna = new Perceptron(3,2);
-//        } else{
-//             rna = new Perceptron(2,1);
-//        }
 
         if(qualBase == portaROBO) {
                 rna = new Perceptron(3,2);
