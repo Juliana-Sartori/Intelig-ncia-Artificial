@@ -17,7 +17,7 @@ public class ReadData {
                     // Divide a linha nos valores
                     String[] partes = linha.split(",");
 
-                    // Mapeia a letra inicial para o array correspondente
+                    // Mapeando as letras inicial para o array correspondente
                     double[] valoresTipo = new double[3];
                     switch (partes[0]) {
                         case "R":
