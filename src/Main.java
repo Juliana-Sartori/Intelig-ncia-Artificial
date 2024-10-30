@@ -89,16 +89,16 @@ public class Main {
         double [][][] qualBase = readUser();
 //        ReadData.printMatriz(qualBase);
 
-        Perceptron rna;
+        MLP mlp;
 
         if(qualBase == portaROBO) {
-                rna = new Perceptron(3,2);
+                mlp = new MLP(3,2);
         }
         else if(qualBase == balance){
-            rna = new Perceptron(4,3);
+            mlp = new MLP(4,3);
         }
         else{
-             rna = new Perceptron(2,1);
+             mlp = new MLP(2,1);
         }
 
         System.out.println("----------------------------------------");
@@ -106,28 +106,61 @@ public class Main {
         System.out.println("----------------------------------------");
 
 
-        for (int e = 0; e < 1000; e++){
-            double erro_epoca_aprox = 0;
+//        for (int e = 0; e < 1000; e++){
+//            double erro_aprox_treino = 0;
+//            double erro_classificacao_treino = 0;
+//
+//            for (int a=0; a < baseTreino.length; a++) {
+//                double x_in = baseTreino[a][0];
+//                double y = baseTreino[a][1];
+//                double[] out = mlp.treinar(x_in, y);
+//
+//                for (int j = 0; j < out.length; j++) {
+//                    erro_aprox_treino += Math.abs((y[j] - out[j]));
+//                }
+//
+//                double outLinha = threshold(out[0]);
+//                erro_epoca_aprox += erro_amostra_aprox;
+//            }
+//
+//            System.out.println("  "+e+"       |"+"    "  +erro_epoca_aprox+"             ");
+//
+//        }
 
-            for (int a=0; a < qualBase.length; a++) {
-                double[][] amostra = qualBase[a];
-                double[] x_in = amostra[0];
-                double[] y = amostra[1];
+        for (int e = 0; e < 1000; e++) {
+            double erro_aprox_treino = 0;
+            double erro_classificacao_treino = 0;
 
-                double[] o = rna.treinar(x_in, y);
+            for (int a = 0; a < qualBase.length; a++) {
+                double[] x_in = qualBase[a][0];
+                double[] y = qualBase[a][1];
+                double[] out = mlp.treinar(x_in, y);
 
-                double erro_amostra_aprox = 0;
-
-                for (int j = 0; j < o.length; j++) {
-                    erro_amostra_aprox += Math.abs((y[j] - o[j]));
+                for (int j = 0; j < out.length; j++) {
+                    erro_aprox_treino += Math.abs(y[j] - out[j]);
                 }
 
-                erro_epoca_aprox += erro_amostra_aprox;
+                boolean erroEncontrado = false;
+                for (int j = 0; j < out.length; j++) {
+                    double outLinha = threshold(out[j]);
+                    if (Math.abs(y[j] - outLinha) > 0) {
+                        erroEncontrado = true;
+                        break;
+                    }
+                }
+                if (erroEncontrado) {
+                    erro_classificacao_treino += 1;
+                }
             }
 
-            System.out.println("  "+e+"       |"+"    "  +erro_epoca_aprox+"             ");
-
+            System.out.println("  " + e + "       |" + "    " + erro_aprox_treino + "             "+ erro_classificacao_treinop + "             ");
         }
+
+
         System.out.println("----------------------------------------");
+    }
+
+    public static double threshold(double value) {
+        return value >= 0.5 ? 1 : 0;
     }
 }
