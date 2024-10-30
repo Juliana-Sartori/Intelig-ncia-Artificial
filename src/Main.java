@@ -92,13 +92,13 @@ public class Main {
         MLP mlp;
 
         if(qualBase == portaROBO) {
-                mlp = new MLP(3,2);
+//                mlp = new MLP(3,2);
         }
         else if(qualBase == balance){
-            mlp = new MLP(4,3);
+//            mlp = new MLP(4,3);
         }
         else{
-             mlp = new MLP(2,1);
+//             mlp = new MLP(2,1);
         }
 
         System.out.println("----------------------------------------");
@@ -126,7 +126,7 @@ public class Main {
 //            System.out.println("  "+e+"       |"+"    "  +erro_epoca_aprox+"             ");
 //
 //        }
-
+/*
         for (int e = 0; e < 1000; e++) {
             double erro_aprox_treino = 0;
             double erro_classificacao_treino = 0;
@@ -153,10 +153,10 @@ public class Main {
                 }
             }
 
-            System.out.println("  " + e + "       |" + "    " + erro_aprox_treino + "             "+ erro_classificacao_treinop + "             ");
+//            System.out.println("  " + e + "       |" + "    " + erro_aprox_treino + "             "+ erro_classificacao_treinop + "             ");
         }
 
-
+*/
         System.out.println("----------------------------------------");
     }
 
