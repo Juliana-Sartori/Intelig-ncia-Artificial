@@ -1,82 +1,73 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Main {
 
-   static Scanner scn = new Scanner(System.in);
+    static Scanner scn = new Scanner(System.in);
 
-    static double [][][] portaE = new double[][][]{
-            {{0,0}, {0}},
-            {{0,1}, {0}},
-            {{1,0}, {0}},
-            {{1,1}, {1}}
+    static double[][][] portaE = new double[][][]{
+            {{0, 0}, {0}},
+            {{0, 1}, {0}},
+            {{1, 0}, {0}},
+            {{1, 1}, {1}}
     };
 
-     static double [][][] portaOU = new double[][][]{
-            {{0,0}, {0}},
-            {{0,1}, {1}},
-            {{1,0}, {1}},
-            {{1,1}, {1}}
+    static double[][][] portaOU = new double[][][]{
+            {{0, 0}, {0}},
+            {{0, 1}, {1}},
+            {{1, 0}, {1}},
+            {{1, 1}, {1}}
     };
 
-    static double [][][] portaXOR = new double[][][]{
-            {{0,0}, {0}},
-            {{0,1}, {1}},
-            {{1,0}, {1}},
-            {{1,1}, {0}}
+    static double[][][] portaXOR = new double[][][]{
+            {{0, 0}, {0}},
+            {{0, 1}, {1}},
+            {{1, 0}, {1}},
+            {{1, 1}, {0}}
     };
 
-    static double [][][] portaROBO = new double[][][]{
-            {{0,0,0}, {1,0}},
-            {{0,0,1}, {0,1}},
-            {{0,1,0}, {0,1}},
-            {{0,1,1}, {0,1}},
-            {{1,0,0}, {1,0}},
-            {{1,0,1}, {1,0}},
-            {{1,1,0}, {1,0}},
-            {{1,1,1}, {0,0}}
+    static double[][][] portaROBO = new double[][][]{
+            {{0, 0, 0}, {1, 0}},
+            {{0, 0, 1}, {0, 1}},
+            {{0, 1, 0}, {0, 1}},
+            {{0, 1, 1}, {0, 1}},
+            {{1, 0, 0}, {1, 0}},
+            {{1, 0, 1}, {1, 0}},
+            {{1, 1, 0}, {1, 0}},
+            {{1, 1, 1}, {0, 0}}
     };
-
 
     static double[][][] balance = ReadData.todaBaseManual();
 
+    public static double[][][] readUser() {
+        int read = scn.nextInt();
 
-   public static double [][][] readUser (){
-       int read = scn.nextInt();
-
-       switch (read) {
-           case 1:
-               return portaE;
-
-           case 2:
-               return portaOU;
-
-           case 3:
-               return portaXOR;
-
-           case 4:
-               return portaROBO;
-
-           case 5:
-               try {
-                   balance = ReadData.convertToTridimensionalArray("/Users/Juliana/Desktop/facul-8/IC/dataBalance.txt");
-                   return balance;
-               } catch (Exception e) {
-                   System.out.println("Erro ao carregar a base de dados: " + e.getMessage());
-                   return new double[][][]{};
-               }
-
-           case 6:
-               return balance;
-
-
-           default:
-               System.out.println("Opção inválida");
-               return new double[][][]{};
-       }
-   }
+        switch (read) {
+            case 1:
+                return portaE;
+            case 2:
+                return portaOU;
+            case 3:
+                return portaXOR;
+            case 4:
+                return portaROBO;
+            case 5:
+                try {
+                    balance = ReadData.convertToTridimensionalArray("/Users/Juliana/Desktop/facul-8/IC/dataBalance.txt");
+                    return balance;
+                } catch (Exception e) {
+                    System.out.println("Erro ao carregar a base de dados: " + e.getMessage());
+                    return new double[][][]{};
+                }
+            case 6:
+                return balance;
+            default:
+                System.out.println("Opção inválida");
+                return new double[][][]{};
+        }
+    }
 
     public static void main(String[] args) {
-
         System.out.println("--------------------------------");
         System.out.println("| Escolha a base de dados:     |\n|                              |     ");
         System.out.println("| Digite [1] para a Porta E    |");
@@ -86,81 +77,79 @@ public class Main {
         System.out.println("| Digite [5] para o BALANCE    |");
         System.out.println("--------------------------------");
 
-        double [][][] qualBase = readUser();
-//        ReadData.printMatriz(qualBase);
+        double[][][] qualBase = readUser();
 
-        MLP mlp;
-
-        if(qualBase == portaROBO) {
-//                mlp = new MLP(3,2);
-        }
-        else if(qualBase == balance){
-//            mlp = new MLP(4,3);
-        }
-        else{
-//             mlp = new MLP(2,1);
+        MLP rna;
+        if (qualBase == portaROBO) {
+            rna = new MLP(3, 4, 2);
+        } else if (qualBase == balance) {
+            rna = new MLP(4, 5, 3);
+        } else {
+            rna = new MLP(2, 3, 1);
         }
 
-        System.out.println("----------------------------------------");
-        System.out.println(" Época    | Erro aproximado da época        " );
-        System.out.println("----------------------------------------");
+        // Dividir os dados em treino (80%) e teste (20%)
+        double[][][] treino = new double[qualBase.length * 80 / 100][][];
+        double[][][] teste = new double[qualBase.length - treino.length][][];
+        Random rand = new Random();
 
+        // Embaralhar os dados
+        for (int i = 0; i < qualBase.length; i++) {
+            int randomIndex = rand.nextInt(qualBase.length);
+            double[][] temp = qualBase[i];
+            qualBase[i] = qualBase[randomIndex];
+            qualBase[randomIndex] = temp;
+        }
 
-//        for (int e = 0; e < 1000; e++){
-//            double erro_aprox_treino = 0;
-//            double erro_classificacao_treino = 0;
-//
-//            for (int a=0; a < baseTreino.length; a++) {
-//                double x_in = baseTreino[a][0];
-//                double y = baseTreino[a][1];
-//                double[] out = mlp.treinar(x_in, y);
-//
-//                for (int j = 0; j < out.length; j++) {
-//                    erro_aprox_treino += Math.abs((y[j] - out[j]));
-//                }
-//
-//                double outLinha = threshold(out[0]);
-//                erro_epoca_aprox += erro_amostra_aprox;
-//            }
-//
-//            System.out.println("  "+e+"       |"+"    "  +erro_epoca_aprox+"             ");
-//
-//        }
-/*
+        // Separar os dados em treino e teste
+        System.arraycopy(qualBase, 0, treino, 0, treino.length);
+        System.arraycopy(qualBase, treino.length, teste, 0, teste.length);
+
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(" Época  |      Erro treino aprox        |     Erro class. treino     |          Erro teste aprox          |   Erro class. teste ");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
         for (int e = 0; e < 1000; e++) {
-            double erro_aprox_treino = 0;
-            double erro_classificacao_treino = 0;
+            double erroTreinoAprox = 0;
+            int erroClassTreino = 0;
 
-            for (int a = 0; a < qualBase.length; a++) {
-                double[] x_in = qualBase[a][0];
-                double[] y = qualBase[a][1];
-                double[] out = mlp.treinar(x_in, y);
+            // Treinamento
+            for (double[][] amostra : treino) {
+                double[] x_in = amostra[0];
+                double[] y = amostra[1];
+                double[] o = rna.treinar(x_in, y);
 
-                for (int j = 0; j < out.length; j++) {
-                    erro_aprox_treino += Math.abs(y[j] - out[j]);
-                }
-
-                boolean erroEncontrado = false;
-                for (int j = 0; j < out.length; j++) {
-                    double outLinha = threshold(out[j]);
-                    if (Math.abs(y[j] - outLinha) > 0) {
-                        erroEncontrado = true;
-                        break;
+                double erroAprox = 0;
+                for (int j = 0; j < o.length; j++) {
+                    erroAprox += Math.abs(y[j] - o[j]);
+                    if (Math.round(o[j]) != y[j]) {
+                        erroClassTreino++;
                     }
                 }
-                if (erroEncontrado) {
-                    erro_classificacao_treino += 1;
-                }
+                erroTreinoAprox += erroAprox;
             }
 
-//            System.out.println("  " + e + "       |" + "    " + erro_aprox_treino + "             "+ erro_classificacao_treinop + "             ");
+            // Teste
+            double erroTesteAprox = 0;
+            int erroClassTeste = 0;
+            for (double[][] amostra : teste) {
+                double[] x_in = amostra[0];
+                double[] y = amostra[1];
+                double[] o = rna.treinar(x_in, y); // Aqui você deve usar a função de inferência, não treinar
+
+                double erroAprox = 0;
+                for (int j = 0; j < o.length; j++) {
+                    erroAprox += Math.abs(y[j] - o[j]);
+                    if (Math.round(o[j]) != y[j]) {
+                        erroClassTeste++;
+                    }
+                }
+                erroTesteAprox += erroAprox;
+            }
+
+            System.out.println("  " + e + "    |        " + erroTreinoAprox + "       |                   " + erroClassTreino + "       |       " + erroTesteAprox + "       |       " + erroClassTeste);
         }
-
-*/
-        System.out.println("----------------------------------------");
-    }
-
-    public static double threshold(double value) {
-        return value >= 0.5 ? 1 : 0;
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 }
+
