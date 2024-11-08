@@ -88,12 +88,11 @@ public class Main {
             rna = new MLP(2, 3, 1);
         }
 
-        // Dividir os dados em treino (80%) e teste (20%)
+        // treino (80%) e teste (20%)
         double[][][] treino = new double[qualBase.length * 80 / 100][][];
         double[][][] teste = new double[qualBase.length - treino.length][][];
         Random rand = new Random();
 
-        // Embaralhar os dados
         for (int i = 0; i < qualBase.length; i++) {
             int randomIndex = rand.nextInt(qualBase.length);
             double[][] temp = qualBase[i];
@@ -101,7 +100,6 @@ public class Main {
             qualBase[randomIndex] = temp;
         }
 
-        // Separar os dados em treino e teste
         System.arraycopy(qualBase, 0, treino, 0, treino.length);
         System.arraycopy(qualBase, treino.length, teste, 0, teste.length);
 
@@ -109,7 +107,7 @@ public class Main {
         System.out.println(" Época  |      Erro treino aprox        |     Erro class. treino     |          Erro teste aprox          |   Erro class. teste ");
         System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-        for (int e = 0; e < 1000; e++) {
+        for (int e = 0; e < 100100; e++) {
             double erroTreinoAprox = 0;
             int erroClassTreino = 0;
 
@@ -135,7 +133,7 @@ public class Main {
             for (double[][] amostra : teste) {
                 double[] x_in = amostra[0];
                 double[] y = amostra[1];
-                double[] o = rna.treinar(x_in, y); // Aqui você deve usar a função de inferência, não treinar
+                double[] o = rna.treinar(x_in, y);
 
                 double erroAprox = 0;
                 for (int j = 0; j < o.length; j++) {
